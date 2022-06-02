@@ -1,0 +1,296 @@
+<!----------------------------------------------------------------------C-168-------------------------------------------------------------------->
+<!--------------------------------------------------------------------index.html-------------------------------------------------------------------->
+
+
+<!--DOCTYPE tag-->
+<!DOCTYPE>
+<html>
+<!--Head tags-->
+<head>
+  
+  <!--Script tags-->
+  <!--(i) Libraries-->
+
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
+  <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+  <script src="https://raw.githack.com/fcor/arjs-gestures/master/dist/gestures.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>  
+  <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script> 
+  <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-firestore.js"></script>
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+ 
+  <!--Script tag (for frebase)-->
+  <script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyCB2qY9WChyGkquKRfQJ9pcJK3wPB2QoEU",
+      authDomain: "automobiles-galore.firebaseapp.com",
+      projectId: "automobiles-galore",
+      storageBucket: "automobiles-galore.appspot.com",
+      messagingSenderId: "23218797128",
+      appId: "1:23218797128:web:bdd4715dd85b4ed221f67d"
+    };
+
+    // Initialize Firebase
+   firebase.initializeApp(firebaseConfig);
+  </script>  
+
+  <!--(ii) Local file-->
+  <script src="./javascript/buttons.js"></script>
+  <script src="./javascript/marker.js"></script>
+  <script src="./javascript/stars.js"></script>
+  
+  <!--Link tags-->
+  <link href="looks.css" rel="stylesheet"></link>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+</head>
+
+<!--Body tag-->
+<body style="margin :0px; overflow: hidden;">
+
+   <!--Scene tag-->   
+   <a-scene gesture-detector id="scene_wrld" button-renderer embedded  vr-mode-ui="enabled:false" >
+
+   <!--Assets tag--> 
+   <a-assets>
+
+    <!--Asset-item tag-->
+    <a-asset-item id="pagani_huayra_bc_car" src="./pagani_huayra_bc/scene.gltf"></a-asset-item>
+</a-assets>
+
+<!--Camera tag-->
+<a-entity camera>
+</a-entity>
+
+<!--Marker tag-->
+<a-marker handle-marker preset="hiro" id="pagani_huayra_car_01" >
+
+  <!--Showcase tags-->
+  <a-entity visible="false"id="pagani_mrkr_sb" >
+  <a-entity rotation="-90 0 0" position="0 0 -1" text="align:center;font:exo2bold;width:5;color:black;value:PAGANI Huayra BC"></a-entity>
+  <a-entity rotation="-90 0 0" position="0 0 -0.75" text="align:center;font:exo2bold;width:3;color:orange;value:US $3,500"></a-entity>
+  <a-box width="2.7" height="1.7" depth="2.3" position="0 0 -0.4" rotation="0 90 -90" opacity="0.6"></a-box>
+  <a-entity gesture-handler rotation="270 180 180" position="0 0 0" scale="0.5 0.5 0.5"  gltf-model="#pagani_huayra_bc_car" ></a-entity>
+  </a-entity>
+</a-marker>
+</a-scene>
+
+
+<!--Dvision tag (for inital three buttons)-->
+<div id="div_btn_in" class="fixed-bottom">
+ 
+  <button class="btn btn-warning" id="purchase_btn"></button>
+  <button class="btn btn-warning" id="info_btn"></button>
+  <button class="btn btn-warning" id="rate_btn"></button>
+</div>
+
+
+
+<!--Dvision tag (for view orders button)-->
+<div id="div_btn_fl">
+ 
+
+<!--Button tag-->  
+<button class="btn btn-warning"  id="view_orders_btn">
+
+ 
+
+
+  <!--Strong tag-->
+  <strong>View Orders</strong>
+</button>               
+</div>
+
+<!--Division tag (for container)-->
+<div class="container">
+
+  <!--Division tag (for rating modal)-->
+  <div id="rating_mdl" class="rating-modal" tabindex="-1" role="dialog">
+
+    <!--Division tag (for dialog)-->
+    <div class="modal-dialog" role="document">
+
+      <!--Division tag (for dialog content)-->
+      <div class="modal-content">
+
+        <!--Division tag (for header tag)-->
+        <div class="modal-header">
+          <h1 id="rating_ttl">RATING</h1>
+          <button onclick="modalDismiss()" class="close" data-dismiss="rating-modal">
+            <span id="cross_btn" aria-hidden="true">X</span>
+          </button>
+        </div>
+
+        <!--Division tag (for modal body)-->
+        <div id="rating_mdl_bd" class="modal-body">
+
+        <!--Division tag (for intorductory tags)-->
+        <div id="rating_intro">
+          <img id="rating_img" width=35% src="./icons/rating.png"></img>
+          <h5 id="rating_prod_nm">Product:</h5>  
+          <text id="rating_scr">/5</text>
+          <h5>How was the product in your opinion? Good, bad, horrible, excellent?</h5>
+          <h5>Wield the critic's pen.... er or keyboard for this product!</h5>
+        </div>    
+        <div id="div_eml"></div>
+        <h6 color="blue">Rating</h6>
+        <input  id="rating_inpt" name="rating-input" class="rating rating-loading" data-min="0" data-max="5" data-step="0.1" value="2.5" />
+        <h6 color="blue">Feedback</h6>
+        <textarea id="rating_fdbk"  placeholder="Your feedback here" class="form-control" rows="3"></textarea>
+        </div>
+
+        <!--Division tag (for modal footer)-->
+        <div class="modal-footer">
+          <button onclick="commentAdd()" class="btn btn-info">Post</button>
+          <button onclick="openComments()"  class="btn btn-info">View Comments</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--Script tag (function for closing the modal)-->
+<script>
+ function modalDismiss(){
+   rating_modal=document.getElementById("rating_mdl");
+   rating_modal.style.display="none"
+ }
+</script>
+
+<!--Script tag (function for displaying the comments)-->
+<script>
+  async function openComments(){
+
+    //Collecting data from the database ~~(i)
+    ratings= await firebase.firestore().collection("ratings").where("comment","!=","").get().then((snapshot)=>{
+     return snapshot.docs.map(doc=>doc.data())
+    })
+
+    //Creating a division tag for the contents
+    var content=document.createElement("div")
+    
+    //Mapping over the elements of the list derived at (i)
+    ratings.map(rating=>{
+
+     //Creating a comment for every iteration
+
+     ////User_name
+     user_name=document.createElement("h4")
+     user_name.innerHTML=rating["name"]
+
+     //User_email
+     user_email=document.createElement("h4")
+     user_email.innerHTML=rating["email"]
+
+     //User_rating
+     user_rating=document.createElement("h5")
+     user_rating.innerHTML=rating["rating"]+"/5"
+
+     //User_feedback
+     user_feedback=document.createElement("h6")
+     user_feedback.innerHTML=rating["comment"]
+
+     //Appending all the elements to the contetns tag as children
+     content.appendChild(user_name)
+     content.appendChild(user_email)
+     content.appendChild(user_rating)
+     content.appendChild(user_feedback)
+     content.appendChild(document.createElement("hr"))
+  })
+
+  //Using a sweetalert modal to display all comments
+  swal({
+
+    //Title attribute
+    title:"Comments",
+
+    //Custom content attribute
+    content,
+
+    //Buttons attribute
+    buttons:{
+          cancel:true
+        }
+  })
+  }
+</script>
+
+<!--Script tag (function for adding a comment)-->
+<script>
+  async function commentAdd(){
+
+    //Sourcing the tag for the product name and getting the name attribute
+    rating_product_title=document.getElementById("rating_prod_nm")
+    automobile_name=rating_product_title.getAttribute("name")
+
+    //Collecting the data of the respective automobile
+    var automobile_data= await firebase.firestore().collection("automobiles").where("name","==",automobile_name).get().then((snapshot)=>{
+      return snapshot.docs.map((doc)=> doc.data())
+    })
+
+    //Souricng the email division tag and getting the current user's email
+    email_div=document.getElementById("div_eml")
+    user_email=email_div.getAttribute("name")
+    
+    //Collecting the data of the respective user
+    var user_data= await firebase.firestore().collection("users").where("email","==",user_email).get().then((snapshot)=>{
+      return snapshot.docs.map((doc)=> doc.data())
+    })
+
+    //Assigning the value of the star rating to a variable ~~(ii)
+    rating_rate= await document.getElementById("rating_inpt").value
+
+    /*
+    Ternary operator used
+    Rating is equal to null->True 
+    Rating is not equal to null->False
+    */
+
+    rating_rate===""?rating_rate=0.1:null
+    
+    //Assigning the value of the feedback form to a variable ~~(iii)
+    rating_feedback= document.getElementById("rating_fdbk").value
+    
+    //Adding the user's comment and given data, along with the automobile's id to the database
+    firebase.firestore().collection("ratings").add({
+      "name":user_data[0]["user_name"],
+      "email":user_email,
+      "comment":rating_feedback,
+      "rating":rating_rate,
+      "id":automobile_data[0]["id"]
+    })
+    
+    //Using a then operator to display a sweetalert modal on success
+    .then(()=>{
+      swal({
+
+        //Icon attribute
+        icon:"success",
+
+        //Text attribute
+        text:"Thanks for your rating!",
+      })
+    })
+
+  //Sourcing the rating modal and setting its dislpay to none  
+  rating_modal=document.getElementById("rating_mdl");
+  rating_modal.style.display="none"
+
+  //Sourcing the star rating and setting its value to 0  
+  rating_input=document.getElementById("rating_inpt")
+  rating_input.value="0"
+
+  //Sourcing the feedback form and setting its value to 0 
+  rating_feedback=document.getElementById("rating_fdbk")
+  rating_feedback.value=""
+}
+</script>
+</body>
+</html>
+<!--------------------------------------------------------------------index.html-------------------------------------------------------------------->
+<!----------------------------------------------------------------------C-168-------------------------------------------------------------------->
